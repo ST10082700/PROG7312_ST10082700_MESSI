@@ -74,12 +74,12 @@
             <StackPanel Orientation="Horizontal"
                 Margin="0,15,0,0">
 
-                <Button Name="btnReportt"
+                <Button Name="btnReport"
                 Content="Report"
                 Foreground="Beige"
                 FontSize="15"
                 FontWeight="Normal"
-                Margin="0,0,10,0" Click="btnStart_Click">
+                Margin="0,0,10,0" Click="btnReport_Click">
 
                     <Button.Style>
                         <Style TargetType="Button">
@@ -109,10 +109,12 @@
                 </Button>
 
 
-                <Button Content="Register"
-                Foreground="#482E1D"
-                FontSize="15"
-                FontWeight="Normal" Click="Button_Click">
+                <Button 
+                    Name="btnEvents"
+                    Content="Events"
+                    Foreground="#482E1D"
+                    FontSize="15"
+                    FontWeight="Normal" Margin="0,0,10,0" Click="btnEvent_Click">
 
                     <Button.Style>
                         <Style TargetType="Button">
@@ -134,6 +136,40 @@
                             Background="{TemplateBinding Background}">
                                 <ContentPresenter VerticalAlignment="center"
                                       HorizontalAlignment="Center"/>
+
+                            </Border>
+                        </ControlTemplate>
+                    </Button.Template>
+
+                </Button>
+                
+                <Button 
+                    x:Name="btnStatus"
+                    Content="Status"
+                    Foreground="Beige"
+                    FontSize="15"
+                    FontWeight="Normal" Click="btnStatus_Click">
+
+                    <Button.Style>
+                        <Style TargetType="{x:Type Button}">
+                            <Setter Property="TextElement.FontFamily" Value="Fonts/Dubai"/>
+                            <Setter Property="Background" Value=" #A6674C"/>
+                            <Setter Property="Cursor" Value="Hand"/>
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="#76704C"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+
+                    <Button.Template>
+                        <ControlTemplate TargetType="{x:Type Button}">
+                            <Border Width="100" Height="25"
+                                    CornerRadius="15"
+                                    Background="{TemplateBinding Background}">
+                                <ContentPresenter VerticalAlignment="center"
+                                                  HorizontalAlignment="Center"/>
 
                             </Border>
                         </ControlTemplate>

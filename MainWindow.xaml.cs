@@ -20,5 +20,22 @@ namespace PROG_ST10082700_MESSI
         {
             InitializeComponent();
         }
+
+        private void btnEvent_Click(object sender, RoutedEventArgs e)
+        {
+
+            //WILL IMPLEMENT SOON
+
+        }
+
+        private void btnReport_Click(object sender, RoutedEventArgs e)
+        {
+            //WILL IMPLEMENT SOON 
+        }
+
+        private void btnStatus_Click(object sender, RoutedEventArgs e)
+        {
+            //WILL IMPLEMENT SOON
+        }
     }
 }
