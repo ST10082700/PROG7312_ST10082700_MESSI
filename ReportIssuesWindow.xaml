@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PROG_ST10082700_MESSI"
         mc:Ignorable="d"
-        Title="ReportIssuesWindow" Height="1000" Width="900" Background="Transparent" WindowStyle="None" WindowStartupLocation="CenterScreen" AllowsTransparency="True">
+        Title="ReportIssuesWindow" Height="580" Width="900" Background="Transparent" WindowStyle="None" WindowStartupLocation="CenterScreen" AllowsTransparency="True">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="350"/>
@@ -37,7 +37,7 @@
                     <StackPanel Margin="30">
                         <TextBlock Text="Report Issue" Style="{StaticResource titleText}" Foreground="#521908"/>
                         <TextBlock Text="Please fill in the form below to report an issue" Style="{StaticResource normalText}" Foreground="#c93f00"/>
-                        <Separator Margin="0 20 0 20"/>
+                        <Separator Margin="0 17 0 17"/>
 
                         <!-- Issue Title -->
                         <StackPanel>

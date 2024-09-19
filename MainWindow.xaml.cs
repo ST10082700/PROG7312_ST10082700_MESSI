@@ -30,7 +30,9 @@ namespace PROG_ST10082700_MESSI
 
         private void btnReport_Click(object sender, RoutedEventArgs e)
         {
-            //WILL IMPLEMENT SOON 
+            ReportIssuesWindow report = new ReportIssuesWindow();
+
+            report.Show();
         }
 
         private void btnStatus_Click(object sender, RoutedEventArgs e)
