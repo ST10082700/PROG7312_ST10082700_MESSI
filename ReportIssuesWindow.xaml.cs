@@ -13,35 +13,75 @@ namespace PROG_ST10082700_MESSI
     {
         private List<IssueReport> reportedIssues = new List<IssueReport>();
         private string attachedFilePath;
+        private const long MAX_FILE_SIZE = 5 * 1024 * 1024; // 5 MB in bytes 
 
         public ReportIssuesWindow()
         {
             InitializeComponent();
         }
 
-        private void CloseButton_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            this.Close();
-        }
-
-        private void MinimizeButton_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            this.WindowState = WindowState.Minimized;
-        }
 
         private void BtnAttachFile_Click(object sender, RoutedEventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog
             {
-                Filter = "Image files (*.png;*.jpeg;*.jpg)|*.png;*.jpeg;*.jpg|All files (*.*)|*.*"
+                Filter = "Allowed files (*.png;*.jpeg;*.jpg;*.doc;*.docx;*.pdf)|*.png;*.jpeg;*.jpg;*.doc;*.docx;*.pdf" // Filter and allow for image, Word document, and PDF files only!!!
             };
+            
+            
 
+           // Check if the file is valid
             if (openFileDialog.ShowDialog() == true)
             {
-                attachedFilePath = openFileDialog.FileName;
-                txtAttachedFileName.Text = System.IO.Path.GetFileName(attachedFilePath);  // Using fully qualified name
+                if (IsValidFileType(openFileDialog.FileName))
+                {
+                    if (IsValidFileSize(openFileDialog.FileName))
+                    {
+                        attachedFilePath = openFileDialog.FileName;
+                        txtAttachedFileName.Text = Path.GetFileName(attachedFilePath);
+                    }
+                    else
+                    {
+                        MessageBox.Show("The uploaded file exceeds the maximum allowed size of 5 MB.",
+                                        "File Too Large", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Please upload a valid file type (Only Image, Word document, or PDF!!!!).",
+                                    "Invalid File Type", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
             }
         }
+
+
+        // Check if the file type selected/uploaded is allowed
+        private bool IsValidFileType(string filePath)
+        {
+            string extension = Path.GetExtension(filePath).ToLower();
+            return extension == ".png" || extension == ".jpeg" || extension == ".jpg"
+                   || extension == ".doc" || extension == ".docx" || extension == ".pdf";
+        }
+
+        // Check if the file size is less than or equal to the maximum allowed size
+        private bool IsValidFileSize(string filePath)
+        {
+            try
+            {
+                long fileSize = new FileInfo(filePath).Length;
+                return fileSize <= MAX_FILE_SIZE;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error checking file size: {ex.Message}",
+                                "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
+            }
+        }
+
+
+
+       
 
         private void BtnSubmit_Click(object sender, RoutedEventArgs e)
         {

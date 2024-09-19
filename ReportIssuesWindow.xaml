@@ -20,7 +20,9 @@
 
                 <TextBlock TextAlignment="Center" FontWeight="SemiBold" FontSize="28" 
                    Text="REPORT ISSUE ->" Foreground="#fefae0" FontFamily="Dubai" />
-                <TextBlock TextWrapping="Wrap" FontSize="16" TextAlignment="Center" 
+
+                <!--Encouraging message-->
+                <TextBlock TextWrapping="Wrap" FontSize="16" TextAlignment="Center"  
                    Foreground="#fefae0" Text="Help us ensure a secure, reliable and great living in your stunning city Kaapstad" 
                    FontFamily="Dubai" FontWeight="Light"/>
 
@@ -30,8 +32,7 @@
         <!--Right Section-->
         <Border Grid.Column="1" Padding="20" Background="#f7ebd3" CornerRadius="0 25 25 0">
             <Grid>
-                <Image x:Name="closeButton" Source="C:\Users\hakee\source\repos\PROG_ST10082700_MESSI\Icons\close.png" Width="25" Margin="0 4 5 0" Style="{StaticResource iconApp}" MouseDown="CloseButton_MouseDown"/>
-                <Image x:Name="minimizeButton" Source="C:\Users\hakee\source\repos\PROG_ST10082700_MESSI\Icons\minimize.png" Width="20" Margin="0 7 40 0" Style="{StaticResource iconApp}" MouseDown="MinimizeButton_MouseDown"/>
+             
 
                 <ScrollViewer VerticalScrollBarVisibility="Auto">
                     <StackPanel Margin="30">
