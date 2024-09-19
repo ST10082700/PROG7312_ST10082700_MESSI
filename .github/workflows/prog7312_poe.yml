@@ -33,18 +33,41 @@ jobs:
       run: dotnet restore ${{ env.Solution_Name }}
 
     - name: Build
-      run: dotnet build ${{ env.Solution_Name }} --configuration ${{ matrix.configuration }} --no-restore
+      run: |
+        dotnet build ${{ env.Solution_Name }} --configuration ${{ matrix.configuration }} --no-restore
+        if ($LASTEXITCODE -ne 0) {
+          Write-Host "Build failed. Displaying detailed error output:"
+          dotnet build ${{ env.Solution_Name }} --configuration ${{ matrix.configuration }} --no-restore --verbosity detailed
+          exit $LASTEXITCODE
+        }
 
     - name: Test
       run: dotnet test ${{ env.Solution_Name }} --configuration ${{ matrix.configuration }} --no-build
 
     - name: Publish
-      if: matrix.configuration == 'Release'
+      if: matrix.configuration == 'Release' && success()
       run: dotnet publish ${{ env.Project_Path }} --configuration ${{ matrix.configuration }} --no-build --output ./publish
 
     - name: Upload artifact
-      if: matrix.configuration == 'Release'
+      if: matrix.configuration == 'Release' && success()
       uses: actions/upload-artifact@v3
       with:
         name: PROG_ST10082700_MESSI-App
         path: ./publish
+
+    - name: List source files
+      if: failure()
+      run: |
+        Write-Host "Listing source files:"
+        Get-ChildItem -Path ${{ github.workspace }} -Recurse -File | Where-Object { $_.Extension -in @('.cs', '.xaml') } | ForEach-Object { $_.FullName }
+
+    - name: Display XAML content
+      if: failure()
+      run: |
+        $xamlFile = Get-ChildItem -Path ${{ github.workspace }} -Recurse -File | Where-Object { $_.Name -eq 'MainWindow.xaml' } | Select-Object -First 1
+        if ($xamlFile) {
+          Write-Host "Contents of MainWindow.xaml:"
+          Get-Content $xamlFile.FullName
+        } else {
+          Write-Host "MainWindow.xaml not found"
+        }
