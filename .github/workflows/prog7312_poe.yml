@@ -16,7 +16,7 @@ jobs:
 
     env:
       Solution_Name: PROG_ST10082700_MESSI.sln
-      Project_Path: PROG_ST10082700_MESSI/PROG_ST10082700_MESSI.csproj
+      Project_Path: PROG_ST10082700_MESSI.csproj
 
     steps:
     - name: Checkout
@@ -44,9 +44,18 @@ jobs:
     - name: Test
       run: dotnet test ${{ env.Solution_Name }} --configuration ${{ matrix.configuration }} --no-build
 
+    - name: List directory contents
+      run: |
+        Write-Host "Current directory:"
+        Get-Location
+        Write-Host "Directory contents:"
+        Get-ChildItem -Recurse
+
     - name: Publish
       if: matrix.configuration == 'Release' && success()
-      run: dotnet publish ${{ env.Project_Path }} --configuration ${{ matrix.configuration }} --no-build --output ./publish
+      run: |
+        Write-Host "Publishing project: ${{ env.Project_Path }}"
+        dotnet publish ${{ env.Project_Path }} --configuration ${{ matrix.configuration }} --no-build --output ./publish
 
     - name: Upload artifact
       if: matrix.configuration == 'Release' && success()
@@ -54,12 +63,6 @@ jobs:
       with:
         name: PROG_ST10082700_MESSI-App
         path: ./publish
-
-    - name: List source files
-      if: failure()
-      run: |
-        Write-Host "Listing source files:"
-        Get-ChildItem -Path ${{ github.workspace }} -Recurse -File | Where-Object { $_.Extension -in @('.cs', '.xaml') } | ForEach-Object { $_.FullName }
 
     - name: Display XAML content
       if: failure()
