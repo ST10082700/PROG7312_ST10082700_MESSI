@@ -46,30 +46,21 @@
 
             <StackPanel>
                 <StackPanel Orientation="Horizontal"
-                    Margin="0,0,0,20">
-                    <Image  Width = "60" Height=" 60"
+                    Margin="0,0,0,0">
+                    <Image  Width = "150" Height=" 100"
                             Source="C:\Users\hakee\source\repos\PROG_ST10082700_MESSI\Images\Kaapstaad.png"
                             RenderOptions.BitmapScalingMode="HighQuality"/>
 
-                    <TextBlock  Text="Kaapstaad Municipality"
-                                Foreground="#F9EBC7"
-                                FontSize="24"
-                                FontWeight="SemiBold"
-                                VerticalAlignment="Center"
-                                FontFamily="Fonts/Dubai"
-                                Margin="10,0,0,0"/>
-
-
                 </StackPanel>
 
-                <TextBlock Text="A platform"
+                <TextBlock Text="Kaapstad Municipality"
                            Foreground="#F9EBC7"
                            FontSize="30"
                            FontWeight="Medium"
                            VerticalAlignment="Center"
                            FontFamily="Fonts/Dubai"/>
 
-                <TextBlock Text="that helps students to organize academic modules, track credits, and manage study hours efficiently."
+                <TextBlock Text="designed platform for residents to report issues or discuss"
                    Foreground="#F9EBC7"
                    FontSize="15"
                    FontWeight="Light"
@@ -83,8 +74,8 @@
             <StackPanel Orientation="Horizontal"
                 Margin="0,15,0,0">
 
-                <Button Name="btnStart"
-                Content="Start"
+                <Button Name="btnReportt"
+                Content="Report"
                 Foreground="Beige"
                 FontSize="15"
                 FontWeight="Normal"
