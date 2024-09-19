@@ -71,3 +71,14 @@ jobs:
         } else {
           Write-Host "MainWindow.xaml not found"
         }
+
+    - name: Display MainWindow.xaml.cs content
+      if: failure()
+      run: |
+        $csFile = Get-ChildItem -Path ${{ github.workspace }} -Recurse -File | Where-Object { $_.Name -eq 'MainWindow.xaml.cs' } | Select-Object -First 1
+        if ($csFile) {
+          Write-Host "Contents of MainWindow.xaml.cs:"
+          Get-Content $csFile.FullName
+        } else {
+          Write-Host "MainWindow.xaml.cs not found"
+        }
