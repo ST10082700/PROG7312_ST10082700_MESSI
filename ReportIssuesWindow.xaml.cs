@@ -81,8 +81,21 @@ namespace PROG_ST10082700_MESSI
 
 
 
-       
+        /*  private string FormatFileSize(long bytes)
+         {
+             string[] suffixes = { "B", "KB", "MB", "GB", "TB" };
+             int counter = 0;
+             decimal number = (decimal)bytes;
+             while (Math.Round(number / 1024) >= 1)
+             {
+                 number /= 1024;
+                 counter++;
+             }
+             return string.Format("{0:n1} {1}", number, suffixes[counter]);
+         }*/ // Was trying things out with this method but it was not needed may be be needed in the future part of the project
 
+
+        // Submit the issue report
         private void BtnSubmit_Click(object sender, RoutedEventArgs e)
         {
             if (ValidateForm())
@@ -103,11 +116,14 @@ namespace PROG_ST10082700_MESSI
             }
         }
 
+        // Clear the form
         private void BtnBackToHome_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
         }
 
+
+        // Validate the form fields
         private bool ValidateForm()
         {
             if (string.IsNullOrWhiteSpace(txtIssueTitle.Text))
@@ -131,6 +147,8 @@ namespace PROG_ST10082700_MESSI
             return true;
         }
 
+
+        // Clear the form fields
         private void ClearForm()
         {
             txtIssueTitle.Clear();
