@@ -5,8 +5,211 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PROG_ST10082700_MESSI"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="500" Width="900"
+        Background="#783D19">
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="25"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <Grid Background="#C4661F"
+       Grid.ColumnSpan="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+
+        </Grid>
+
+        <StackPanel Grid.Row="1"
+            VerticalAlignment="Center"
+            Margin="60">
+
+            <StackPanel>
+                <StackPanel Orientation="Horizontal"
+                    Margin="0,0,0,20">
+                    <Image  Width = "60" Height=" 60"
+                            Source="C:\Users\hakee\source\repos\PROG_ST10082700_MESSI\Images\Kaapstaad.png"
+                            RenderOptions.BitmapScalingMode="HighQuality"/>
+
+                    <TextBlock  Text="Kaapstaad Municipality"
+                                Foreground="#F9EBC7"
+                                FontSize="24"
+                                FontWeight="SemiBold"
+                                VerticalAlignment="Center"
+                                FontFamily="Fonts/Dubai"
+                                Margin="10,0,0,0"/>
+
+
+                </StackPanel>
+
+                <TextBlock Text="A platform"
+                           Foreground="#F9EBC7"
+                           FontSize="30"
+                           FontWeight="Medium"
+                           VerticalAlignment="Center"
+                           FontFamily="Fonts/Dubai"/>
+
+                <TextBlock Text="that helps students to organize academic modules, track credits, and manage study hours efficiently."
+                   Foreground="#F9EBC7"
+                   FontSize="15"
+                   FontWeight="Light"
+                   VerticalAlignment="Center"
+                   FontFamily="Fonts/Dubai"
+                   TextWrapping="Wrap"
+                   Margin="0,10,0,0"/>
+
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal"
+                Margin="0,15,0,0">
+
+                <Button Name="btnStart"
+                Content="Start"
+                Foreground="Beige"
+                FontSize="15"
+                FontWeight="Normal"
+                Margin="0,0,10,0" Click="btnStart_Click">
+
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="TextElement.FontFamily" Value="Fonts/Dubai"/>
+                            <Setter Property="Background" Value=" #5F6F52"/>
+                            <Setter Property="Cursor" Value="Hand"/>
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="#545E45"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border Width="100" Height="25"
+                            CornerRadius="15"
+                            Background="{TemplateBinding Background}">
+                                <ContentPresenter VerticalAlignment="center"
+                                      HorizontalAlignment="Center"/>
+
+                            </Border>
+                        </ControlTemplate>
+                    </Button.Template>
+
+                </Button>
+
+
+                <Button Content="Register"
+                Foreground="#482E1D"
+                FontSize="15"
+                FontWeight="Normal" Click="Button_Click">
+
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="TextElement.FontFamily" Value="Fonts/Dubai"/>
+                            <Setter Property="Background" Value=" #A9B388"/>
+                            <Setter Property="Cursor" Value="Hand"/>
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="#76704C"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border Width="100" Height="25"
+                            CornerRadius="15"
+                            Background="{TemplateBinding Background}">
+                                <ContentPresenter VerticalAlignment="center"
+                                      HorizontalAlignment="Center"/>
+
+                            </Border>
+                        </ControlTemplate>
+                    </Button.Template>
+
+                </Button>
+
+            </StackPanel>
+        </StackPanel>
+
+        <Grid   Grid.Column="1"
+                Grid.RowSpan="2"
+                Margin="160, -365, -610, 85"
+                Panel.ZIndex="-1">
+
+            <Grid.RenderTransform>
+                <RotateTransform Angle="50"/>
+            </Grid.RenderTransform>
+
+            <StackPanel Orientation="Horizontal"
+                Margin="-350, 250, -255, -250">
+                <StackPanel>
+                    <Border Width="700"
+                    Height="35"
+                    Background="#545E45"
+                    Margin="150,0,0,0"
+                    CornerRadius="25"/>
+
+
+                    <Border Width="700"
+                    Height="35"
+                    Background="#FFECC6"
+                    Margin="0,15,0,0"
+                    CornerRadius="25"/>
+
+                    <Border Width="700"
+                    Height="35"
+                    Background="#A6674C"
+                    Margin="75,15,0,0"
+                    CornerRadius="25"/>
+
+                </StackPanel>
+
+                <StackPanel>
+                    <Border Width="700"
+                    Height="35"
+                    Background="#545E45"
+                    Margin="150,0,0,0"
+                    CornerRadius="25"/>
+
+
+
+                    <Border Width="700"
+                    Height="35"
+                    Background="#FFECC6"
+                    Margin="0,15,0,0"
+                    CornerRadius="25"/>
+
+                    <Border Width="700"
+                    Height="35"
+                    Background="#A6674C"
+                    Margin="75,15,0,0"
+                    CornerRadius="25"/>
+
+                </StackPanel>
+            </StackPanel>
+        </Grid>
 
     </Grid>
 </Window>
