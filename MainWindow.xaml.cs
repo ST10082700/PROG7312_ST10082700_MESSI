@@ -1,13 +1,5 @@
-﻿using System.Text;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace PROG_ST10082700_MESSI
 {
@@ -23,15 +15,22 @@ namespace PROG_ST10082700_MESSI
 
         private void btnEvent_Click(object sender, RoutedEventArgs e)
         {
+            // Create an instance of EventService
+            IEventService eventService = new EventService();
 
-            //WILL IMPLEMENT SOON
+            // Create an instance of RecommendationService, passing in the EventService
+            IRecommendationService recommendationService = new RecommendationService(eventService);
 
+            // Create the EventsWindow, passing in the services
+            EventsWindow eventsWindow = new EventsWindow(eventService, recommendationService);
+
+            // Show the window
+            eventsWindow.Show();
         }
 
         private void btnReport_Click(object sender, RoutedEventArgs e)
         {
             ReportIssuesWindow report = new ReportIssuesWindow();
-
             report.Show();
         }
 

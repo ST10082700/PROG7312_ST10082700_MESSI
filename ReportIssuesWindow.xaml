@@ -15,25 +15,18 @@
         <!--Left Section-->
         <Border Background="#783d19" Padding="30" CornerRadius="25 0 0 25">
             <StackPanel VerticalAlignment="Center">
-
                 <Image Source="C:\Users\hakee\source\repos\PROG_ST10082700_MESSI\Images\Kaapstaad.png"/>
-
                 <TextBlock TextAlignment="Center" FontWeight="SemiBold" FontSize="28" 
                    Text="REPORT ISSUE ->" Foreground="#fefae0" FontFamily="Dubai" />
-
-                <!--Encouraging message-->
                 <TextBlock TextWrapping="Wrap" FontSize="16" TextAlignment="Center"  
                    Foreground="#fefae0" Text="Help us ensure a secure, reliable and great living in your stunning city Kaapstad" 
                    FontFamily="Dubai" FontWeight="Light"/>
-
             </StackPanel>
         </Border>
-        
+
         <!--Right Section-->
         <Border Grid.Column="1" Padding="20" Background="#f7ebd3" CornerRadius="0 25 25 0">
             <Grid>
-             
-
                 <ScrollViewer VerticalScrollBarVisibility="Auto">
                     <StackPanel Margin="30">
                         <TextBlock Text="Report Issue" Style="{StaticResource titleText}" Foreground="#521908"/>
@@ -80,6 +73,7 @@
                             <TextBlock Text="Attach Media" Style="{StaticResource text}"/>
                             <Button x:Name="btnAttachFile" Content="Choose File" Style="{StaticResource buttonStyles}" Margin="0 10 0 0" Click="BtnAttachFile_Click"/>
                             <TextBlock x:Name="txtAttachedFileName" Text="No file chosen" Style="{StaticResource normalText}" Foreground="#783d19" Margin="0 10 0 0"/>
+                            <Button x:Name="btnDownloadAttachment" Content="Download Attachment" Style="{StaticResource buttonStyles}" Margin="0 10 0 0" Click="BtnDownloadAttachment_Click" Visibility="Collapsed"/>
                         </StackPanel>
 
                         <!-- Submit Button -->
@@ -91,9 +85,5 @@
                 </ScrollViewer>
             </Grid>
         </Border>
-
-
-
-
     </Grid>
 </Window>

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
 using Microsoft.Win32;
 using System.IO;
 using System.Windows.Documents;
@@ -12,33 +11,32 @@ namespace PROG_ST10082700_MESSI
     public partial class ReportIssuesWindow : Window
     {
         private List<IssueReport> reportedIssues = new List<IssueReport>();
-        private string attachedFilePath;
-        private const long MAX_FILE_SIZE = 5 * 1024 * 1024; // 5 MB in bytes 
+        private byte[] attachedFileContent;
+        private string attachedFileName;
+        private const long MAX_FILE_SIZE = 5 * 1024 * 1024; // 5 MB in bytes
 
         public ReportIssuesWindow()
         {
             InitializeComponent();
         }
 
-
         private void BtnAttachFile_Click(object sender, RoutedEventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog
             {
-                Filter = "Allowed files (*.png;*.jpeg;*.jpg;*.doc;*.docx;*.pdf)|*.png;*.jpeg;*.jpg;*.doc;*.docx;*.pdf" // Filter and allow for image, Word document, and PDF files only!!!
+                Filter = "Allowed files (*.png;*.jpeg;*.jpg;*.doc;*.docx;*.pdf)|*.png;*.jpeg;*.jpg;*.doc;*.docx;*.pdf"
             };
-            
-            
 
-           // Check if the file is valid
             if (openFileDialog.ShowDialog() == true)
             {
                 if (IsValidFileType(openFileDialog.FileName))
                 {
                     if (IsValidFileSize(openFileDialog.FileName))
                     {
-                        attachedFilePath = openFileDialog.FileName;
-                        txtAttachedFileName.Text = Path.GetFileName(attachedFilePath);
+                        attachedFileContent = File.ReadAllBytes(openFileDialog.FileName);
+                        attachedFileName = Path.GetFileName(openFileDialog.FileName);
+                        txtAttachedFileName.Text = attachedFileName;
+                        btnDownloadAttachment.Visibility = Visibility.Visible;
                     }
                     else
                     {
@@ -48,14 +46,12 @@ namespace PROG_ST10082700_MESSI
                 }
                 else
                 {
-                    MessageBox.Show("Please upload a valid file type (Only Image, Word document, or PDF!!!!).",
+                    MessageBox.Show("Please upload a valid file type (Only Image, Word document, or PDF).",
                                     "Invalid File Type", MessageBoxButton.OK, MessageBoxImage.Warning);
                 }
             }
         }
 
-
-        // Check if the file type selected/uploaded is allowed
         private bool IsValidFileType(string filePath)
         {
             string extension = Path.GetExtension(filePath).ToLower();
@@ -63,7 +59,6 @@ namespace PROG_ST10082700_MESSI
                    || extension == ".doc" || extension == ".docx" || extension == ".pdf";
         }
 
-        // Check if the file size is less than or equal to the maximum allowed size
         private bool IsValidFileSize(string filePath)
         {
             try
@@ -79,23 +74,6 @@ namespace PROG_ST10082700_MESSI
             }
         }
 
-
-
-        /*  private string FormatFileSize(long bytes)
-         {
-             string[] suffixes = { "B", "KB", "MB", "GB", "TB" };
-             int counter = 0;
-             decimal number = (decimal)bytes;
-             while (Math.Round(number / 1024) >= 1)
-             {
-                 number /= 1024;
-                 counter++;
-             }
-             return string.Format("{0:n1} {1}", number, suffixes[counter]);
-         }*/ // Was trying things out with this method but it was not needed may be be needed in the future part of the project
-
-
-        // Submit the issue report
         private void BtnSubmit_Click(object sender, RoutedEventArgs e)
         {
             if (ValidateForm())
@@ -106,7 +84,8 @@ namespace PROG_ST10082700_MESSI
                     Location = txtLocation.Text,
                     Category = (cmbCategory.SelectedItem as ComboBoxItem)?.Content.ToString(),
                     Description = new TextRange(rtbDescription.Document.ContentStart, rtbDescription.Document.ContentEnd).Text,
-                    AttachedFilePath = attachedFilePath,
+                    AttachedFileContent = attachedFileContent,
+                    AttachedFileName = attachedFileName,
                     ReportDate = DateTime.Now
                 };
 
@@ -116,14 +95,11 @@ namespace PROG_ST10082700_MESSI
             }
         }
 
-        // Clear the form
         private void BtnBackToHome_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
         }
 
-
-        // Validate the form fields
         private bool ValidateForm()
         {
             if (string.IsNullOrWhiteSpace(txtIssueTitle.Text))
@@ -147,8 +123,6 @@ namespace PROG_ST10082700_MESSI
             return true;
         }
 
-
-        // Clear the form fields
         private void ClearForm()
         {
             txtIssueTitle.Clear();
@@ -156,7 +130,31 @@ namespace PROG_ST10082700_MESSI
             cmbCategory.SelectedIndex = -1;
             rtbDescription.Document.Blocks.Clear();
             txtAttachedFileName.Text = "No file chosen";
-            attachedFilePath = null;
+            attachedFileContent = null;
+            attachedFileName = null;
+            btnDownloadAttachment.Visibility = Visibility.Collapsed;
+        }
+
+        private void BtnDownloadAttachment_Click(object sender, RoutedEventArgs e)
+        {
+            if (attachedFileContent != null && !string.IsNullOrEmpty(attachedFileName))
+            {
+                SaveFileDialog saveFileDialog = new SaveFileDialog
+                {
+                    FileName = attachedFileName,
+                    Filter = "All Files (*.*)|*.*"
+                };
+
+                if (saveFileDialog.ShowDialog() == true)
+                {
+                    File.WriteAllBytes(saveFileDialog.FileName, attachedFileContent);
+                    MessageBox.Show("File downloaded successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+            }
+            else
+            {
+                MessageBox.Show("No file attached to download.", "No Attachment", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
         }
     }
 
@@ -166,7 +164,8 @@ namespace PROG_ST10082700_MESSI
         public string Location { get; set; }
         public string Category { get; set; }
         public string Description { get; set; }
-        public string AttachedFilePath { get; set; }
+        public byte[] AttachedFileContent { get; set; }
+        public string AttachedFileName { get; set; }
         public DateTime ReportDate { get; set; }
     }
 }
