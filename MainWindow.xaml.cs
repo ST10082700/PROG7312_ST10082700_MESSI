@@ -30,7 +30,19 @@ namespace PROG_ST10082700_MESSI
 
         private void btnReport_Click(object sender, RoutedEventArgs e)
         {
-            ReportIssuesWindow report = new ReportIssuesWindow();
+            // Create an instance of IssueReportService
+            IIssueReportService issueReportService = new IssueReportService();
+
+            // Create an instance of FileService
+            IFileService fileService = new FileService();
+
+            // Create an instance of ValidationService
+            IValidationService validationService = new ValidationService();
+
+            // Create the ReportIssuesWindow, passing in the services
+            ReportIssuesWindow report = new ReportIssuesWindow(issueReportService, fileService, validationService);
+
+            // Show the window
             report.Show();
         }
 
