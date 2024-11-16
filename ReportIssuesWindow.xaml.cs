@@ -175,7 +175,7 @@ namespace PROG_ST10082700_MESSI
                 SaveFileDialog saveFileDialog = new SaveFileDialog
                 {
                     FileName = attachedFileName,
-                    Filter = "All Files (*.*)|*.*"
+                    Filter =  "Allowed files (*.png;*.jpeg;*.jpg;*.doc;*.docx;*.pdf)|*.png;*.jpeg;*.jpg;*.doc;*.docx;*.pdf"
                 };
 
                 if (saveFileDialog.ShowDialog() == true)
