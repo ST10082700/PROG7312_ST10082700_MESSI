@@ -109,6 +109,167 @@ Note: The file download functionality is currently experimental and may not work
 - `Queue<string>`: Tracks recent user searches for recommendation purposes.
 - `Dictionary<string, int>`: Counts search term frequency to improve recommendations.
 
+## Data Structures Implementation
+
+### 1. Tree Structures
+#### a. AVL Tree Implementation
+```csharp
+public class ServiceRequestAVLTree
+{
+    // Implementation details...
+}
+```
+- **Role**: Maintains a self-balancing binary search tree for service requests
+- **Efficiency Contribution**:
+  - O(log n) time complexity for insertions and searches
+  - Automatically balances after modifications
+  - Perfect for maintaining sorted service requests
+- **Example Usage**:
+```csharp
+var avlTree = new ServiceRequestAVLTree();
+avlTree.Insert(new ServiceRequest { Id = "SR001" });
+var request = avlTree.Search("SR001");
+```
+
+#### b. Red-Black Tree Implementation
+```csharp
+public class ServiceRequestRedBlackTree
+{
+    // Implementation details...
+}
+```
+- **Role**: Provides efficient search and insertion operations with less rigid balancing
+- **Efficiency Contribution**:
+  - O(log n) operations with fewer rotations than AVL
+  - Better for frequent insertions
+  - Excellent for ID-based lookups
+- **Example Usage**:
+```csharp
+var rbTree = new ServiceRequestRedBlackTree();
+rbTree.Insert(new ServiceRequest { Id = "SR002" });
+```
+
+### 2. Heap Structure
+```csharp
+public class ServiceRequestHeap
+{
+    // Implementation details...
+}
+```
+- **Role**: Manages priority-based organization of service requests
+- **Efficiency Contribution**:
+  - O(log n) for insertions and extractions
+  - Automatically maintains priority order
+  - Perfect for priority-based queuing
+- **Priority Calculation**:
+```csharp
+Priority Score = Base Priority + Age Factor + Category Weight
+```
+
+### 3. Graph Structure
+```csharp
+public class ServiceRequestGraph
+{
+    // Implementation details...
+}
+```
+- **Role**: Manages relationships between service requests
+- **Efficiency Contribution**:
+  - Efficient relationship tracking
+  - O(1) edge lookup
+  - Supports related request discovery
+- **Relationship Weights**:
+  - Location-based (40%)
+  - Category-based (30%)
+  - Time proximity (20%)
+  - Status similarity (10%)
+
+## Service Request Status Feature
+
+### Core Components
+
+1. **Data Structure Manager**
+```csharp
+public class ServiceRequestManager
+{
+    private readonly ServiceRequestAVLTree _avlTree;
+    private readonly ServiceRequestHeap _priorityHeap;
+    private readonly ServiceRequestGraph _relationshipGraph;
+    // Implementation...
+}
+```
+
+2. **Status Tracking System**
+- Uses AVL Tree for sorted display
+- Heap for priority management
+- Graph for relationship tracking
+
+### Efficiency Features
+
+1. **Search Operations**
+- ID-based search: O(log n) using Red-Black Tree
+- Status-based filtering: O(log n) using AVL Tree
+- Priority-based retrieval: O(log n) using Heap
+
+2. **Update Operations**
+- Status updates: O(log n)
+- Priority adjustments: O(log n)
+- Relationship updates: O(1)
+
+## Setup and Building
+
+### Prerequisites
+- Visual Studio 2022
+- .NET Framework 4.7.2 or later
+- Windows OS
+
+### Building the Application
+1. Clone the repository
+2. Open `PROG_ST10082700_MESSI.sln`
+3. Restore NuGet packages
+4. Build solution (F5 or Ctrl+Shift+B)
+
+### Running Tests
+1. Open Test Explorer in Visual Studio
+2. Run all tests to verify functionality
+
+## Usage Examples
+
+### 1. Submitting Service Request
+```csharp
+var request = new ServiceRequest
+{
+    Id = "SR001",
+    Title = "Water Leak",
+    Priority = "High",
+    Location = "Main Street"
+};
+_serviceRequestManager.AddRequest(request);
+```
+
+### 2. Checking Request Status
+```csharp
+var status = _serviceRequestManager.GetRequestStatus("SR001");
+var related = _serviceRequestManager.GetRelatedRequests("SR001");
+```
+
+### 3. Priority-based Processing
+```csharp
+var highPriority = _serviceRequestManager.GetPrioritizedRequests();
+```
+
+## Performance Considerations
+
+1. **Memory Usage**
+- Fixed-size arrays instead of dynamic lists
+- Efficient node structures
+- Minimal object duplication
+
+2. **Time Complexity**
+- Search operations: O(log n)
+- Insert operations: O(log n)
+- Relationship queries: O(1)
+
 ## Contributing
 This project is part of an educational assignment. While it's not open for public contributions, feedback and suggestions are welcome.
 

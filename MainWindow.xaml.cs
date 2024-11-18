@@ -74,7 +74,7 @@ namespace PROG_ST10082700_MESSI
                 }
                 else
                 {
-                    MessageBox.Show("Issue report service is not initialized.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                   // MessageBox.Show("Issue report service is not initialized.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
 
                 report.Show();

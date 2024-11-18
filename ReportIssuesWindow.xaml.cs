@@ -61,51 +61,77 @@ namespace PROG_ST10082700_MESSI
 
         private void BtnSubmit_Click(object sender, RoutedEventArgs e)
         {
-            if (_validationService.ValidateForm(txtIssueTitle.Text, txtLocation.Text, cmbCategory.SelectedItem))
+            try
             {
+                // First validate UI controls exist
+                if (txtIssueTitle == null || txtLocation == null || cmbCategory == null || rtbDescription == null)
+                {
+                    MessageBox.Show(
+                        "Form controls not properly initialized.",
+                        "Error",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Error
+                    );
+                    return;
+                }
+
+                // Then validate required fields
+                if (string.IsNullOrWhiteSpace(txtIssueTitle.Text))
+                {
+                    MessageBox.Show(
+                        "Please enter an issue title.",
+                        "Validation Error",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Warning
+                    );
+                    txtIssueTitle.Focus();
+                    return;
+                }
+
+                if (string.IsNullOrWhiteSpace(txtLocation.Text))
+                {
+                    MessageBox.Show(
+                        "Please enter a location.",
+                        "Validation Error",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Warning
+                    );
+                    txtLocation.Focus();
+                    return;
+                }
+
+                if (cmbCategory.SelectedItem == null)
+                {
+                    MessageBox.Show(
+                        "Please select a category.",
+                        "Validation Error",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Warning
+                    );
+                    cmbCategory.Focus();
+                    return;
+                }
+
+                // Create and validate the issue report
+                var newIssue = CreateIssueReport();
+                if (newIssue == null)
+                {
+                    return; // CreateIssueReport will show its own error message
+                }
+
+                // Submit the issue
                 try
                 {
-                    // Validate all required fields first
-                    if (string.IsNullOrWhiteSpace(txtIssueTitle?.Text))
-                    {
-                        MessageBox.Show("Please enter an issue title.", "Validation Error",
-                            MessageBoxButton.OK, MessageBoxImage.Warning);
-                        return;
-                    }
+                    _issueReportService.AddIssue(newIssue);
 
-                    if (string.IsNullOrWhiteSpace(txtLocation?.Text))
-                    {
-                        MessageBox.Show("Please enter a location.", "Validation Error",
-                            MessageBoxButton.OK, MessageBoxImage.Warning);
-                        return;
-                    }
+                    MessageBox.Show(
+                        $"Issue reported successfully!\nRequest ID: {newIssue.Id}",
+                        "Success",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Information
+                    );
 
-                    if (cmbCategory?.SelectedItem == null)
-                    {
-                        MessageBox.Show("Please select a category.", "Validation Error",
-                            MessageBoxButton.OK, MessageBoxImage.Warning);
-                        return;
-                    }
-
-                    // Then use the validation service
-                    if (_validationService.ValidateForm(
-                        txtIssueTitle.Text.Trim(),
-                        txtLocation.Text.Trim(),
-                        cmbCategory.SelectedItem))
-                    {
-                        var newIssue = CreateIssueReport();
-                        if (newIssue != null)
-                        {
-                            _issueReportService.AddIssue(newIssue);
-                            MessageBox.Show(
-                                $"Issue reported successfully!\nRequest ID: {newIssue.Id}",
-                                "Success",
-                                MessageBoxButton.OK,
-                                MessageBoxImage.Information
-                            );
-                            ClearForm();
-                        }
-                    }
+                    ClearForm();
                 }
                 catch (Exception ex)
                 {
@@ -116,6 +142,15 @@ namespace PROG_ST10082700_MESSI
                         MessageBoxImage.Error
                     );
                 }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    $"An unexpected error occurred: {ex.Message}",
+                    "Error",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error
+                );
             }
         }
 
