@@ -18,12 +18,14 @@ namespace PROG_ST10082700_MESSI
         private readonly ServiceRequestRedBlackTree _rbTree;
         private readonly ServiceRequestHeap _priorityHeap;
         private readonly ServiceRequestGraph _relationshipGraph;
+        private ServiceRequestManager _requestManager; 
         private readonly IIssueReportService _issueReportService;
         private ServiceRequest[] _currentDisplayRequests;
         private int _currentDisplaySize;
+        private ServiceRequestManager requestManager;
         private const string SearchPlaceholder = "Enter issue title";
 
-        public ServiceRequestStatusWindow(IIssueReportService issueReportService)
+        public ServiceRequestStatusWindow(IIssueReportService issueReportService, ServiceRequestManager requestManager) 
         {
             InitializeComponent();
             _issueReportService = issueReportService;
@@ -39,7 +41,14 @@ namespace PROG_ST10082700_MESSI
             cmbStatusFilter.SelectedIndex = 0;
 
             InitializeData();
+            _requestManager = requestManager;
             UpdateDisplay();
+            _requestManager = requestManager;
+        }
+
+        public ServiceRequestStatusWindow(ServiceRequestManager requestManager)
+        {
+            this.requestManager = requestManager;
         }
 
         private void InitializeData()

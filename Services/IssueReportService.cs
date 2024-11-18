@@ -11,12 +11,13 @@ using PROG_ST10082700_MESSI.Models;
 
 namespace PROG_ST10082700_MESSI.Services
 {
-    public class IssueReportService : IIssueReportService
+    public class IssueReportService : IIssueReportService 
     {
         private readonly ServiceRequestAVLTree _avlTree;
         private readonly ServiceRequestHeap _priorityHeap;
         private readonly ServiceRequestRedBlackTree _rbTree;
         private readonly ServiceRequestGraph _graph;
+        public event Action<IssueReport> IssueAdded;
 
         public IssueReportService()
         {
@@ -49,6 +50,7 @@ namespace PROG_ST10082700_MESSI.Services
             {
                 throw new Exception($"Error adding issue: {ex.Message}");
             }
+            IssueAdded?.Invoke(issue);
         }
 
         public IssueReport GetIssueById(string id)
@@ -62,7 +64,7 @@ namespace PROG_ST10082700_MESSI.Services
                 var found = _rbTree.Search(searchRequest);
 
                 // Convert back to IssueReport if found
-                return found != null ? ConvertToIssueReport(found) : null;
+                return found != null ? ConvertToIssueReport(found) : null!;
             }
             catch (Exception ex)
             {
