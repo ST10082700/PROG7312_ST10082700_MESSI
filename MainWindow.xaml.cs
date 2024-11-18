@@ -20,7 +20,7 @@ namespace PROG_ST10082700_MESSI
             InitializeComponent();
 
             // Initialize the services
-            _issueReportService = new IssueReportService(); 
+            _issueReportService = new IssueReportService() as IIssueReportService;
             _fileService = new FileService();
             _validationService = new ValidationService();
 
@@ -52,22 +52,30 @@ namespace PROG_ST10082700_MESSI
                     _validationService
                 );
 
-                // Subscribe to issue changes through the service
-                (_issueReportService as IssueReportService).IssueAdded += (issue) =>
+                // Check if _issueReportService is not null
+                if (_issueReportService is IssueReportService issueReportService)
                 {
-                    var request = new ServiceRequest
+                    // Subscribe to issue changes through the service
+                    issueReportService.IssueAdded += (issue) =>
                     {
-                        Id = issue.Id,
-                        Description = issue.Title,
-                        Status = issue.Status,
-                        SubmissionDate = issue.ReportDate,
-                        Priority = issue.Priority,
-                        Location = issue.Location,
-                        Category = issue.Category
-                    };
+                        var request = new ServiceRequest
+                        {
+                            Id = issue.Id,
+                            Description = issue.Title,
+                            Status = issue.Status,
+                            SubmissionDate = issue.ReportDate,
+                            Priority = issue.Priority,
+                            Location = issue.Location,
+                            Category = issue.Category
+                        };
 
-                    _requestManager.AddRequest(request);
-                };
+                        _requestManager.AddRequest(request);
+                    };
+                }
+                else
+                {
+                    MessageBox.Show("Issue report service is not initialized.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
 
                 report.Show();
             }
@@ -81,6 +89,7 @@ namespace PROG_ST10082700_MESSI
                 );
             }
         }
+
 
         private void btnStatus_Click(object sender, RoutedEventArgs e)
         {

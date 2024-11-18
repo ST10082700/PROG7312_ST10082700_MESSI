@@ -38,8 +38,25 @@ namespace PROG_ST10082700_MESSI
 
         private void UpdateAttachmentUI(FileInfo fileInfo)
         {
-            txtAttachedFileName.Text = fileInfo.Name;
-            btnDownloadAttachment.Visibility = Visibility.Visible;
+            try
+            {
+                if (fileInfo == null) return;
+
+                if (txtAttachedFileName != null)
+                    txtAttachedFileName.Text = fileInfo.Name;
+
+                if (btnDownloadAttachment != null)
+                    btnDownloadAttachment.Visibility = Visibility.Visible;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    $"Error updating attachment UI: {ex.Message}",
+                    "Error",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error
+                );
+            }
         }
 
         private void BtnSubmit_Click(object sender, RoutedEventArgs e)
@@ -48,17 +65,47 @@ namespace PROG_ST10082700_MESSI
             {
                 try
                 {
-                    var newIssue = CreateIssueReport();
-                    _issueReportService.AddIssue(newIssue);
+                    // Validate all required fields first
+                    if (string.IsNullOrWhiteSpace(txtIssueTitle?.Text))
+                    {
+                        MessageBox.Show("Please enter an issue title.", "Validation Error",
+                            MessageBoxButton.OK, MessageBoxImage.Warning);
+                        return;
+                    }
 
-                    MessageBox.Show(
-                        $"Issue reported successfully!\nRequest ID: {newIssue.Id}",
-                        "Success",
-                        MessageBoxButton.OK,
-                        MessageBoxImage.Information
-                    );
+                    if (string.IsNullOrWhiteSpace(txtLocation?.Text))
+                    {
+                        MessageBox.Show("Please enter a location.", "Validation Error",
+                            MessageBoxButton.OK, MessageBoxImage.Warning);
+                        return;
+                    }
 
-                    ClearForm();
+                    if (cmbCategory?.SelectedItem == null)
+                    {
+                        MessageBox.Show("Please select a category.", "Validation Error",
+                            MessageBoxButton.OK, MessageBoxImage.Warning);
+                        return;
+                    }
+
+                    // Then use the validation service
+                    if (_validationService.ValidateForm(
+                        txtIssueTitle.Text.Trim(),
+                        txtLocation.Text.Trim(),
+                        cmbCategory.SelectedItem))
+                    {
+                        var newIssue = CreateIssueReport();
+                        if (newIssue != null)
+                        {
+                            _issueReportService.AddIssue(newIssue);
+                            MessageBox.Show(
+                                $"Issue reported successfully!\nRequest ID: {newIssue.Id}",
+                                "Success",
+                                MessageBoxButton.OK,
+                                MessageBoxImage.Information
+                            );
+                            ClearForm();
+                        }
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -74,22 +121,60 @@ namespace PROG_ST10082700_MESSI
 
         private IssueReport CreateIssueReport()
         {
-            var issue = new IssueReport
+            try
             {
-                Title = txtIssueTitle.Text,
-                Location = txtLocation.Text,
-                Category = (cmbCategory.SelectedItem as ComboBoxItem)?.Content.ToString(),
-                Description = new TextRange(
+                // Validate UI controls
+                if (rtbDescription?.Document == null)
+                {
+                    throw new InvalidOperationException("Description control not initialized.");
+                }
+
+                var description = new TextRange(
                     rtbDescription.Document.ContentStart,
                     rtbDescription.Document.ContentEnd
-                ).Text,
-                AttachedFileContent = _fileService.GetAttachedFileContent(),
-                AttachedFileName = _fileService.GetAttachedFileName()
-            };
+                ).Text;
 
-            // Let the IssueReport class handle ID generation and timestamps
-            issue.AssignPriority(); // Automatically assign priority based on content
-            return issue;
+                var categoryContent = (cmbCategory.SelectedItem as ComboBoxItem)?.Content?.ToString();
+                if (string.IsNullOrWhiteSpace(categoryContent))
+                {
+                    throw new InvalidOperationException("Invalid category selection.");
+                }
+
+                var issue = new IssueReport
+                {
+                    Title = txtIssueTitle.Text.Trim(),
+                    Location = txtLocation.Text.Trim(),
+                    Category = categoryContent,
+                    Description = description.Trim(),
+                    AttachedFileContent = _fileService.GetAttachedFileContent(),
+                    AttachedFileName = _fileService.GetAttachedFileName()
+                };
+
+                // Validate the created issue
+                if (!_validationService.ValidateIssueReport(issue))
+                {
+                    MessageBox.Show(
+                        "Failed to create valid issue report. Please check all fields.",
+                        "Validation Error",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Warning
+                    );
+                    return null;
+                }
+
+                issue.AssignPriority();
+                return issue;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    $"Error creating issue report: {ex.Message}",
+                    "Error",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error
+                );
+                return null;
+            }
         }
 
         private void BtnBackToHome_Click(object sender, RoutedEventArgs e)
@@ -99,13 +184,26 @@ namespace PROG_ST10082700_MESSI
 
         private void ClearForm()
         {
-            txtIssueTitle.Clear();
-            txtLocation.Clear();
-            cmbCategory.SelectedIndex = -1;
-            rtbDescription.Document.Blocks.Clear();
-            txtAttachedFileName.Text = "No file chosen";
-            _fileService.ClearAttachedFile();
-            btnDownloadAttachment.Visibility = Visibility.Collapsed;
+            try
+            {
+                if (txtIssueTitle != null) txtIssueTitle.Clear();
+                if (txtLocation != null) txtLocation.Clear();
+                if (cmbCategory != null) cmbCategory.SelectedIndex = -1;
+                if (rtbDescription?.Document != null) rtbDescription.Document.Blocks.Clear();
+                if (txtAttachedFileName != null) txtAttachedFileName.Text = "No file chosen";
+                _fileService?.ClearAttachedFile();
+                if (btnDownloadAttachment != null)
+                    btnDownloadAttachment.Visibility = Visibility.Collapsed;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    $"Error clearing form: {ex.Message}",
+                    "Error",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error
+                );
+            }
         }
 
         private void BtnDownloadAttachment_Click(object sender, RoutedEventArgs e)
