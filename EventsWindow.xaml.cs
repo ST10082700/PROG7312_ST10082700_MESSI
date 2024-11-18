@@ -41,9 +41,6 @@ namespace PROG_ST10082700_MESSI
 
         private void BtnBackToHome_Click(object sender, RoutedEventArgs e)
         {
-            // Add logic to navigate back to the main window
-            MainWindow mainWindow = new MainWindow();
-            mainWindow.Show();
             this.Close();
         }
     }

@@ -13,6 +13,9 @@
     <Compile Update="ReportIssuesWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="ServiceRequestStatusWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Page Update="EventsWindow.xaml">
@@ -22,6 +25,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="ReportIssuesWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="ServiceRequestStatusWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
